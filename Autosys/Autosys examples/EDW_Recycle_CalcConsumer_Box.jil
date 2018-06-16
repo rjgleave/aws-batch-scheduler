@@ -1,0 +1,115 @@
+/* ----------------- EDW_Recycle_CalcConsumer_Box ----------------- */
+
+insert_job: EDW_Recycle_CalcConsumer_Box   job_type: BOX
+owner: autosys
+permission: gx,wx
+date_conditions: 1
+days_of_week: sa
+start_times: "20:00"
+description: "EDW - Restart of CalcService Consumer, if fail please contact ESDAppSupport."
+max_run_alarm: 1
+alarm_if_fail: 1
+
+ /* ----------------- EDW_C2QFile_Generate_NodeA ----------------- */
+
+ insert_job: EDW_C2QFile_Generate_NodeA   job_type: CMD
+ box_name: EDW_Recycle_CalcConsumer_Box
+ command: /bin/ksh /opt/ADW/consumer_maint/edw_c2qfile_generate.ksh
+ machine: edw0plapp001a
+ owner: adwapp
+ permission:
+ date_conditions: 0
+ description: "EDW - Generate C2Q file for CalcService Consumer, if fail please contact ESDAppSupport."
+ std_out_file: /var/calcservice_nrt/log/$AUTO_JOB_NAME.$$YYYYMMDD.out
+ std_err_file: /var/calcservice_nrt/log/$AUTO_JOB_NAME.$$YYYYMMDD.err
+ alarm_if_fail: 1
+
+ /* ----------------- EDW_StopAllConsumer_NodeA ----------------- */
+
+ insert_job: EDW_StopAllConsumer_NodeA   job_type: CMD
+ box_name: EDW_Recycle_CalcConsumer_Box
+ command: /bin/ksh /opt/ADW/consumer_maint/edw_stop_all_consumer.ksh CALC_NODE_A
+ machine: edw0plapp001a
+ owner: adwapp
+ permission:
+ date_conditions: 0
+ condition: s(EDW_C2QFile_Generate_NodeA)
+ description: "EDW - Stop of CalcService Consumer, if fail please contact ESDAppSupport."
+ std_out_file: /var/calcservice_nrt/log/$AUTO_JOB_NAME.$$YYYYMMDD.out
+ std_err_file: /var/calcservice_nrt/log/$AUTO_JOB_NAME.$$YYYYMMDD.err
+ alarm_if_fail: 1
+
+ /* ----------------- EDW_StartAllConsumer_NodeA ----------------- */
+
+ insert_job: EDW_StartAllConsumer_NodeA   job_type: CMD
+ box_name: EDW_Recycle_CalcConsumer_Box
+ command: /bin/ksh /opt/ADW/consumer_maint/edw_start_all_consumer.ksh CALC_NODE_A
+ machine: edw0plapp001a
+ owner: adwapp
+ permission:
+ date_conditions: 0
+ condition: s(EDW_StopAllConsumer_NodeA)
+ description: "EDW - Restart of CalcService Consumer, if fail please contact ESDAppSupport."
+ std_out_file: /var/calcservice_nrt/log/$AUTO_JOB_NAME.$$YYYYMMDD.out
+ std_err_file: /var/calcservice_nrt/log/$AUTO_JOB_NAME.$$YYYYMMDD.err
+ alarm_if_fail: 1
+
+ /* ----------------- EDW_StopAllConsumer_NodeB ----------------- */
+
+ insert_job: EDW_StopAllConsumer_NodeB   job_type: CMD
+ box_name: EDW_Recycle_CalcConsumer_Box
+ command: /bin/ksh /opt/ADW/consumer_maint/edw_stop_all_consumer.ksh CALC_NODE_B
+ machine: edw0plapp001b
+ owner: adwapp
+ permission:
+ date_conditions: 0
+ condition: s(EDW_C2QFile_Generate_NodeA)
+ description: "EDW - Stop of CalcService Consumer, if fail please contact ESDAppSupport."
+ std_out_file: /var/calcservice_nrt/log/$AUTO_JOB_NAME.$$YYYYMMDD.out
+ std_err_file: /var/calcservice_nrt/log/$AUTO_JOB_NAME.$$YYYYMMDD.err
+ alarm_if_fail: 1
+
+ /* ----------------- EDW_StartAllConsumer_NodeB ----------------- */
+
+ insert_job: EDW_StartAllConsumer_NodeB   job_type: CMD
+ box_name: EDW_Recycle_CalcConsumer_Box
+ command: /bin/ksh /opt/ADW/consumer_maint/edw_start_all_consumer.ksh CALC_NODE_B
+ machine: edw0plapp001b
+ owner: adwapp
+ permission:
+ date_conditions: 0
+ condition: s(EDW_StopAllConsumer_NodeB)
+ description: "EDW - Restart of CalcService Consumer, if fail please contact ESDAppSupport."
+ std_out_file: /var/calcservice_nrt/log/$AUTO_JOB_NAME.$$YYYYMMDD.out
+ std_err_file: /var/calcservice_nrt/log/$AUTO_JOB_NAME.$$YYYYMMDD.err
+ alarm_if_fail: 1 
+
+ /* ----------------- EDW_StopAllConsumer_NodeC ----------------- */
+
+ insert_job: EDW_StopAllConsumer_NodeC   job_type: CMD
+ box_name: EDW_Recycle_CalcConsumer_Box
+ command: /bin/ksh /opt/ADW/consumer_maint/edw_stop_all_consumer.ksh CALC_NODE_C
+ machine: atl0vmsuapp12
+ owner: adwapp
+ permission:
+ date_conditions: 0
+ condition: s(EDW_C2QFile_Generate_NodeA)
+ description: "EDW - Stop of CalcService Consumer, if fail please contact ESDAppSupport."
+ std_out_file: /var/calcservice_nrt/log/$AUTO_JOB_NAME.$$YYYYMMDD.out
+ std_err_file: /var/calcservice_nrt/log/$AUTO_JOB_NAME.$$YYYYMMDD.err
+ alarm_if_fail: 1
+
+ /* ----------------- EDW_StartAllConsumer_NodeC ----------------- */
+
+ insert_job: EDW_StartAllConsumer_NodeC   job_type: CMD
+ box_name: EDW_Recycle_CalcConsumer_Box
+ command: /bin/ksh /opt/ADW/consumer_maint/edw_start_all_consumer.ksh CALC_NODE_C
+ machine: atl0vmsuapp12
+ owner: adwapp
+ permission:
+ date_conditions: 0
+ condition: s(EDW_StopAllConsumer_NodeC)
+ description: "EDW - Restart of CalcService Consumer, if fail please contact ESDAppSupport."
+ std_out_file: /home/adwapp/.activeMQ/log/$AUTO_JOB_NAME.$$YYYYMMDD.out
+ std_err_file: /home/adwapp/.activeMQ/log/$AUTO_JOB_NAME.$$YYYYMMDD.err
+ alarm_if_fail: 1 

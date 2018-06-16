@@ -1,0 +1,71 @@
+/* ----------------- EDW_PROD_DBFS_Mount_Box ----------------- */ 
+
+insert_job: EDW_PROD_DBFS_Mount_Box   job_type: BOX 
+owner: autosys
+permission: gx,wx
+date_conditions: 1
+days_of_week: all
+start_mins: 00, 30
+run_window: "00:00 - 23:59"
+description: "If DBFS mount in adw0xdb01lh01/02/03/04 - please contact EDW-DEV@citco.com"
+alarm_if_fail: 1
+
+
+ /* ----------------- EDW_PROD_DBFS_Mount_NodeA ----------------- */ 
+ 
+ insert_job: EDW_PROD_DBFS_Mount_NodeA   job_type: CMD 
+ box_name: EDW_PROD_DBFS_Mount_Box
+ command: /opt/ADW/edw_maint/edw_check_dbfs_mount.sh /dbfs_direct/STAGING/ADWData/log/edw_maint
+ machine: adw0xdb01lh01
+ owner: adwapp
+ permission: 
+ date_conditions: 0
+ description: "If DBFS mount in adw0xdb01lh01 - please contact EDW-DEV@citco.com"
+ std_out_file: "/opt/ADW/asysscripts/log/$AUTO_JOB_NAME.$${YYYYMMDD}.out"
+ std_err_file: "/opt/ADW/asysscripts/log/$AUTO_JOB_NAME.$${YYYYMMDD}.err"
+ alarm_if_fail: 1
+ 
+ 
+ /* ----------------- EDW_PROD_DBFS_Mount_NodeB ----------------- */ 
+ 
+ insert_job: EDW_PROD_DBFS_Mount_NodeB   job_type: CMD 
+ box_name: EDW_PROD_DBFS_Mount_Box
+ command: /opt/ADW/edw_maint/edw_check_dbfs_mount.sh /dbfs_direct/STAGING/ADWData/log/edw_maint
+ machine: adw0xdb01lh02
+ owner: adwapp
+ permission: 
+ date_conditions: 0
+ description: "If DBFS mount in adw0xdb01lh02 - please contact EDW-DEV@citco.com"
+ std_out_file: "/opt/ADW/asysscripts/log/$AUTO_JOB_NAME.$${YYYYMMDD}.out"
+ std_err_file: "/opt/ADW/asysscripts/log/$AUTO_JOB_NAME.$${YYYYMMDD}.err"
+ alarm_if_fail: 1
+ 
+ 
+ /* ----------------- EDW_PROD_DBFS_Mount_NodeC ----------------- */ 
+ 
+ insert_job: EDW_PROD_DBFS_Mount_NodeC   job_type: CMD 
+ box_name: EDW_PROD_DBFS_Mount_Box
+ command: /opt/ADW/edw_maint/edw_check_dbfs_mount.sh /dbfs_direct/STAGING/ADWData/log/edw_maint
+ machine: adw0xdb01lh03
+ owner: adwapp
+ permission: 
+ date_conditions: 0
+ description: "If DBFS mount in adw0xdb01lh03 - please contact EDW-DEV@citco.com"
+ std_out_file: "/opt/ADW/asysscripts/log/$AUTO_JOB_NAME.$${YYYYMMDD}.out"
+ std_err_file: "/opt/ADW/asysscripts/log/$AUTO_JOB_NAME.$${YYYYMMDD}.err"
+ alarm_if_fail: 1
+ 
+ 
+ /* ----------------- EDW_PROD_DBFS_Mount_NodeD ----------------- */ 
+ 
+ insert_job: EDW_PROD_DBFS_Mount_NodeD   job_type: CMD 
+ box_name: EDW_PROD_DBFS_Mount_Box
+ command: /opt/ADW/edw_maint/edw_check_dbfs_mount.sh /dbfs_direct/STAGING/ADWData/log/edw_maint
+ machine: adw0xdb01lh04
+ owner: adwapp
+ permission: 
+ date_conditions: 0
+ description: "If DBFS mount in adw0xdb01lh04 - please contact EDW-DEV@citco.com"
+ std_out_file: "/opt/ADW/asysscripts/log/$AUTO_JOB_NAME.$${YYYYMMDD}.out"
+ std_err_file: "/opt/ADW/asysscripts/log/$AUTO_JOB_NAME.$${YYYYMMDD}.err"
+ alarm_if_fail: 1 
