@@ -74,7 +74,9 @@ def main():
         jobQueue=jQueue,
         jobDefinition=jDefinition
     )
-    print("Submited JobName: {}, JobId: {}, Runs After: [ ]".format(job1['jobName'],job1['jobId']))
+
+
+    print("Submitted JobName: {}, JobId: {}, Runs After: [ ]".format(job1['jobName'],job1['jobId']))
 
     # Submit jobs 2a, 2b, 2c, all of which depend on job1
     job2a = batch.submit_job(
@@ -88,7 +90,9 @@ def main():
             }
         ]
     )
-    print("Submited JobName: {}, JobId: {}, Runs After: [ {} ]".format(job2a['jobName'],job2a['jobId'],job1['jobName']))
+
+    
+    print("Submitted JobName: {}, JobId: {}, Runs After: [ {} ]".format(job2a['jobName'],job2a['jobId'],job1['jobName']))
     job2b = batch.submit_job(
         jobName=job2bName,
         jobQueue=jQueue,
@@ -100,7 +104,9 @@ def main():
             }
         ]
     )
-    print("Submited JobName: {}, JobId: {}, Runs After: [ {} ]".format(job2b['jobName'],job2b['jobId'],job1['jobName']))
+
+
+    print("Submitted JobName: {}, JobId: {}, Runs After: [ {} ]".format(job2b['jobName'],job2b['jobId'],job1['jobName']))
     job2c = batch.submit_job(
         jobName=job2cName,
         jobQueue=jQueue,
@@ -112,7 +118,9 @@ def main():
             }
         ]
     )
-    print("Submited JobName: {}, JobId: {}, Runs After: [ {} ]".format(job2c['jobName'],job2c['jobId'],job1['jobName']))
+
+
+    print("Submitted JobName: {}, JobId: {}, Runs After: [ {} ]".format(job2c['jobName'],job2c['jobId'],job1['jobName']))
 
     # Submits job3 which depends on job2a, job2b, jobc
     job3 = batch.submit_job(
@@ -134,8 +142,23 @@ def main():
             }
         ]
     )
-    print("Submited JobName: {}, JobId: {}, Runs After: [ {}, {}, {} ]".format(job3['jobName'],job3['jobId'],job2a['jobName'],job2b['jobName'],job2c['jobName']))    
+    VdependsOn=[
+            { 
+                'jobId': job2a['jobId'],
+                'type': 'SEQUENTIAL'
+            },
+            { 
+                'jobId': job2b['jobId'],
+                'type': 'SEQUENTIAL'
+            },
+            { 
+                'jobId': job2c['jobId'],
+                'type': 'SEQUENTIAL'
+            }
+        ]
+    
 
+    print("Submitted JobName: {}, JobId: {}, Runs After: [ {}, {}, {} ]".format(job3['jobName'],job3['jobId'],job2a['jobName'],job2b['jobName'],job2c['jobName']))    
 
 if __name__ == "__main__":
     main()
