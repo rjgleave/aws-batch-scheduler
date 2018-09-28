@@ -1,0 +1,19 @@
+This message can be used with api gateway to start a state machine directly
+Send this message to API gateway to start the state machine.
+
+Notes:  
+* input document - include \ for all quotes 
+* name - IMPORTANT!!!! -- this must be a unique name EACH TIME you execute the state machine!!!!  (maybe it could be mapped
+through the api)
+{
+    "input": "{\"scheduleId\" : \"daily-am-load\", \"startDateTime\" : \" \", \"scheduleStatus\" : \" \"}",
+    "name": "executed-via-api-31",
+    "stateMachineArn": "arn:aws:states:us-east-1:786247309603:stateMachine:BatchSchedulerMasterStateMachine"
+}
+
+This is an example of a restart
+{
+    "input": "{\"scheduleId\" : \"daily-am-load\", \"startDateTime\" : \"2018-09-07T04:20:00.884784\", \"scheduleStatus\" : \"RESTART\"}",
+    "name": "executed-via-api-5",
+    "stateMachineArn": "arn:aws:states:us-east-1:786247309603:stateMachine:BatchSchedulerMasterStateMachine"
+}

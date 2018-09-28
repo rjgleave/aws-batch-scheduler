@@ -1,0 +1,109 @@
+{
+  "Comment": "A state machine that submits multiple jobs to AWS Batch and monitors the schedule until it completes.",
+  "StartAt": "Retrieve Batch Schedule",
+  "States": {
+    "Retrieve Batch Schedule": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:1234567890:function:getJobSchedule",
+      "ResultPath": "$",
+      "Next": "Schedule Found?"
+    },
+    "Schedule Found?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.scheduleStatus",
+          "StringEquals": "FAILED",
+          "Next": "Schedule Failed"
+        }
+      ],
+      "Default": "Restart Failed Schedule?"
+    },
+    "Restart Failed Schedule?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.scheduleStatus",
+          "StringEquals": "RESTART",
+          "Next": "Reset Schedule"
+        }
+      ],
+      "Default": "Submit Schedule"
+    },
+    "Reset Schedule": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:1234567890:function:BatchScheduleReset",
+      "ResultPath": "$",
+      "Next": "Submit Schedule"
+    },
+    "Submit Schedule": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:1234567890:function:BatchSchedulerJobSubmitter",
+      "ResultPath": "$",
+      "Next": "Wait X Seconds"
+    },
+    "Wait X Seconds": {
+      "Type": "Wait",
+      "Seconds": 60,
+      "Next": "Get Schedule Status"
+    },
+    "Get Schedule Status": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:1234567890:function:BatchScheduleJobPoller",
+      "Next": "Update History",
+      "ResultPath": "$"
+    },
+    "Update History": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:1234567890:function:updateBatchHistory",
+      "ResultPath": "$",
+      "Next": "Send SNS Message?"
+    },
+    "Send SNS Message?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.scheduleStatus",
+          "StringEquals": "FAILED",
+          "Next": "Send SNS Message"
+        },
+        {
+          "Variable": "$.scheduleStatus",
+          "StringEquals": "SUCCEEDED",
+          "Next": "Send SNS Message"
+        }
+      ],
+      "Default": "Schedule Complete?"
+    },
+    "Send SNS Message": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:1234567890:function:BatchSchedulerSendSNS",
+      "ResultPath": "$",
+      "Next": "Schedule Complete?"
+    },
+    "Schedule Complete?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.scheduleStatus",
+          "StringEquals": "FAILED",
+          "Next": "Schedule Failed"
+        },
+        {
+          "Variable": "$.scheduleStatus",
+          "StringEquals": "SUCCEEDED",
+          "Next": "Schedule Succeeded"
+        }
+      ],
+      "Default": "Wait X Seconds"
+    },
+    "Schedule Failed": {
+      "Type": "Fail",
+      "Cause": "AWS Batch Schedule Failed",
+      "Error": "Batch Schedule FAILED"
+    },
+    "Schedule Succeeded": {
+      "Type": "Succeed"
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "name": "Schedule Failed",
+  "input": {
+    "jobList": [
+      {
+        "jobName": "job1",
+        "jobDependencies": [],
+        "jobId": {
+          "jobId": "802d951d-6393-48ab-96f1-86fd1fd5ac80"
+        },
+        "jobStatus": "SUCCEEDED",
+        "jobQueue": "arn:aws:batch:us-east-1:786247309604:job-queue/SampleJobQueue-5da08f800c56cd4",
+        "jobDefinition": "arn:aws:batch:us-east-1:786247309604:job-definition/SampleJobDefinition-49e0468e4a867f5:1"
+      },
+      {
+        "jobName": "job2",
+        "jobDependencies": [
+          "job1"
+        ],
+        "jobId": {
+          "jobId": "0404d370-6df6-4ed9-93ff-3a514c9f30d9"
+        },
+        "jobStatus": "SUCCEEDED",
+        "jobQueue": "arn:aws:batch:us-east-1:786247309604:job-queue/SampleJobQueue-5da08f800c56cd4",
+        "jobDefinition": "arn:aws:batch:us-east-1:786247309604:job-definition/SampleJobDefinition-49e0468e4a867f5:1"
+      },
+      {
+        "jobName": "job3",
+        "jobDependencies": [
+          "job1"
+        ],
+        "jobId": {
+          "jobId": "49f0cf39-68b4-4647-bd7a-b055ecf0a01d"
+        },
+        "jobStatus": "FAILED",
+        "jobQueue": "arn:aws:batch:us-east-1:786247309604:job-queue/SampleJobQueue-5da08f800c56cd4",
+        "jobDefinition": "arn:aws:batch:us-east-1:786247309604:job-definition/SampleJobDefinition-49e0468e4a867f5:1"
+      },
+      {
+        "jobName": "job4",
+        "jobDependencies": [
+          "job1",
+          "job2"
+        ],
+        "jobId": {
+          "jobId": "19a78b17-f6c3-4af9-82b1-55712faa58b1"
+        },
+        "jobStatus": "SUCCEEDED",
+        "jobQueue": "arn:aws:batch:us-east-1:786247309604:job-queue/SampleJobQueue-5da08f800c56cd4",
+        "jobDefinition": "arn:aws:batch:us-east-1:786247309604:job-definition/SampleJobDefinition-49e0468e4a867f5:1"
+      },
+      {
+        "jobName": "job5",
+        "jobDependencies": [
+          "job2",
+          "job3",
+          "job4"
+        ],
+        "jobId": {
+          "jobId": "a06ad3a0-9f9a-4095-aa85-c1c3bb0aadb7"
+        },
+        "jobStatus": "FAILED",
+        "jobQueue": "arn:aws:batch:us-east-1:786247309604:job-queue/SampleJobQueue-5da08f800c56cd4",
+        "jobDefinition": "arn:aws:batch:us-east-1:786247309604:job-definition/SampleJobDefinition-49e0468e4a867f5:1"
+      }
+    ],
+    "scheduleId": "daily-am-load",
+    "scheduleSnsTopic": "arn:aws:sns:us-east-1:786247309604:StepFunctionsSample-TaskTimer-45ecbddc-ab41-6310-1209-4e9f55e8a709-SNSTopic-ZVOI2L5XGS6X",
+    "scheduleName": "Morning load and ETL for big data",
+    "scheduleStatus": "FAILED",
+    "category": "big-data-schedules",
+    "wait_time": "60",
+    "lastDateTime": "2018-09-22T19:57:28.446117",
+    "startDateTime": "2018-09-22T19:55:26.747498"
+  }
+}

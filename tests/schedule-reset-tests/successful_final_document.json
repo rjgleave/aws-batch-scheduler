@@ -1,0 +1,77 @@
+{
+    "name": "Schedule Succeeded",
+    "output": {
+      "jobList": [
+        {
+          "jobName": "FTP",
+          "jobId": {
+            "jobId": "eabb56fe-7145-4359-822d-078092f8823e"
+          },
+          "jobDependencies": [],
+          "jobStatus": "SUCCEEDED",
+          "jobQueue": "arn:aws:batch:us-east-1:1234567890:job-queue/SampleJobQueue-5da08f800c56cd4",
+          "jobDefinition": "arn:aws:batch:us-east-1:1234567890:job-definition/SampleJobDefinition-49e0468e4a867f5:1"
+        },
+        {
+          "jobName": "Cleanse",
+          "jobId": {
+            "jobId": "8797e76a-0950-4ac2-97a5-40f9caf9a453"
+          },
+          "jobDependencies": [
+            "FTP"
+          ],
+          "jobStatus": "SKIP",
+          "jobQueue": "arn:aws:batch:us-east-1:1234567890:job-queue/SampleJobQueue-5da08f800c56cd4",
+          "jobDefinition": "arn:aws:batch:us-east-1:1234567890:job-definition/SampleJobDefinition-49e0468e4a867f5:1"
+        },
+        {
+          "jobName": "ConvertParquet",
+          "jobId": {
+            "jobId": "4aebe726-ba9a-4473-ac90-64d5d843f9ce"
+          },
+          "jobDependencies": [
+            "FTP"
+          ],
+          "jobStatus": "SUCCEEDED",
+          "jobQueue": "arn:aws:batch:us-east-1:1234567890:job-queue/SampleJobQueue-5da08f800c56cd4",
+          "jobDefinition": "arn:aws:batch:us-east-1:1234567890:job-definition/SampleJobDefinition-49e0468e4a867f5:1"
+        },
+        {
+          "jobName": "Aggregate",
+          "jobId": {
+            "jobId": "e97d6f90-8ded-4d5b-9486-e5bac3361e00"
+          },
+          "jobDependencies": [
+            "FTP",
+            "Cleanse"
+          ],
+          "jobStatus": "SUCCEEDED",
+
+          "jobQueue": "arn:aws:batch:us-east-1:1234567890:job-queue/SampleJobQueue-5da08f800c56cd4",
+          "jobDefinition": "arn:aws:batch:us-east-1:1234567890:job-definition/SampleJobDefinition-49e0468e4a867f5:1"
+        },
+        {
+          "jobName": "LoadRedshift",
+          "jobId": {
+            "jobId": "b2b09baf-4b05-47c9-9a87-2820aae2bd16"
+          },
+          "jobDependencies": [
+            "Cleanse",
+            "ConvertParquet",
+            "Aggregate"
+          ],
+          "jobStatus": "SUCCEEDED",
+          "jobQueue": "arn:aws:batch:us-east-1:1234567890:job-queue/SampleJobQueue-5da08f800c56cd4",
+          "jobDefinition": "arn:aws:batch:us-east-1:1234567890:job-definition/SampleJobDefinition-49e0468e4a867f5:1"
+        }
+      ],
+      "scheduleId": "daily-edw-load",
+      "scheduleSnsTopic": "arn:aws:sns:us-east-1:1234567890:StepFunctionsSample-TaskTimer-45ecbddc-ab41-6310-1209-4e9f55e8a709-SNSTopic-ZVOI2L5XGS6X",
+      "scheduleName": "Morning load and ETL for big data",
+      "scheduleStatus": "SUCCEEDED",
+      "category": "big-data-schedules",
+      "wait_time": "60",
+      "lastDateTime": "2018-09-24T16:26:00.306560",
+      "startDateTime": "2018-09-24T16:22:57.674577"
+    }
+  }

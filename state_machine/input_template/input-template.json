@@ -1,0 +1,28 @@
+Sample state machine input templates to describe a job schedule load (before get from dynamoDB)
+
+These are examples of a clean, initial run
+{    
+  "scheduleId" : "daily-am-load",
+  "startDateTime" : " ",
+  "scheduleStatus" : " "
+}
+
+{    
+  "scheduleId" : "daily-pm-load",
+  "startDateTime" : " ",
+  "scheduleStatus" : " "
+}
+
+These are examples of a restart of a failed schedule.  NOTE: you must provide the startDateTime
+of the failed job and also set the scheduleStatus to 'RESTART'
+{    
+  "scheduleId" : "daily-am-load",
+  "startDateTime" : "2018-09-24T22:01:52.337998",
+  "scheduleStatus" : "RESTART"
+}
+
+{    
+  "scheduleId" : "daily-am-load",
+  "startDateTime" : "2018-09-07T04:29:55.698501",
+  "scheduleStatus" : "RESTART"
+}
